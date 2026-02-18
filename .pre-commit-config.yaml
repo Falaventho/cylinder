@@ -1,8 +1,9 @@
 fail_fast: false
-exclude: (?x)^( docs/ | another/example/directory/to_exclude/ | example/file/to_exclude\.py | another/example/file/to_exclude\.py )
+exclude:
+  (?x)^( docs/ | another/example/directory/to_exclude/ | example/file/to_exclude\.py | another/example/file/to_exclude\.py )
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.2.0
+    rev: v5.0.0
     hooks:
       - id: end-of-file-fixer
       - id: trailing-whitespace
@@ -10,27 +11,20 @@ repos:
       - id: mixed-line-ending
         args: [--fix=lf]
 
-  - repo: https://github.com/myint/autoflake
-    rev: v1.4
-    hooks:
-      - id: autoflake
-        name: autoflake
-        args: ["--in-place", "--remove-unused-variables", "--remove-all-unused-imports"]
-
   - repo: https://github.com/pycqa/isort
-    rev: 5.10.1
+    rev: 5.13.2
     hooks:
       - id: isort
         name: isort (python)
 
   - repo: https://github.com/psf/black
-    rev: 22.3.0
+    rev: 24.10.0
     hooks:
       - id: black
         args: ["--line-length", "119"]
 
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.1.0
+    rev: v2.4.0
     hooks:
       - id: codespell
         args: [--ignore-words=.dictionary.txt, -w]
@@ -49,7 +43,7 @@ repos:
         args: [--fix]
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.2.0
+    rev: v5.0.0
     hooks:
       - id: check-json
       - id: check-yaml
@@ -76,7 +70,7 @@ repos:
         language: python
 
   - repo: https://github.com/PyCQA/doc8
-    rev: 0.11.2
+    rev: v1.1.2
     hooks:
       - id: doc8
         args: ["--max-line-length", "119", "--file-encoding", "utf-8"]
@@ -87,7 +81,7 @@ repos:
       - id: markdownlint
 
   - repo: https://github.com/PyCQA/bandit
-    rev: 1.7.4
+    rev: 1.7.10
     hooks:
       - id: bandit
         args: [--severity-level=high, --confidence-level=high]
@@ -106,7 +100,7 @@ repos:
         name: html validate
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks-safety
-    rev: v1.3.0
+    rev: v1.3.3
     hooks:
       - id: python-safety-dependencies-check
         files: requirements.txt
