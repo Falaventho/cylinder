@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=82"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "cylinder"
+dynamic = ["version"]
+description = "A web application framework and webserver based on Flask and Waitress"
+readme = { file = "README.md", content-type = "text/markdown" }
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = ["flask", "waitress"]
+
+[[project.authors]]
+name = "Chris Wheeler"
+email = "cwheeler@tier2.tech"
+
+[[project.maintainers]]
+name = "Nicholas Gray"
+email = "nicholas@tier2.tech"
+
+[project.urls]
+Homepage = "https://github.com/plasmacan/cylinder"
+
+[tool.setuptools]
+py-modules = ["cylinder"]
+package-dir = {"" = "src"}
+
+[tool.setuptools.dynamic]
+version = {attr = "cylinder.__version__"}
