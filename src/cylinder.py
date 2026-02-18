@@ -179,7 +179,7 @@ def setup_after_request(app):
 
 def setup_teardown_request(app):
     @app.teardown_request
-    def teardown_request(excpt):
+    def teardown_request(_exception):
         local_manager.cleanup()
 
 
