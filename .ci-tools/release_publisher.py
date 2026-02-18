@@ -6,9 +6,7 @@ import sys
 
 sys.path.append(os.getcwd())
 
-import src.cylinder  # pylint: disable=wrong-import-position
-
-# flake8: noqa:T001
+import src.cylinder
 
 code_version = src.cylinder.__version__
 
