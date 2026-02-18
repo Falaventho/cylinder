@@ -1,9 +1,10 @@
 fail_fast: false
 exclude:
-  (?x)^( docs/ | another/example/directory/to_exclude/ | example/file/to_exclude\.py | another/example/file/to_exclude\.py )
+  (?x)^( docs/ | another/example/directory/to_exclude/ | example/file/to_exclude\.py |
+  another/example/file/to_exclude\.py )
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v4.6.0
     hooks:
       - id: end-of-file-fixer
       - id: trailing-whitespace
@@ -43,7 +44,7 @@ repos:
         args: [--fix]
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v4.6.0
     hooks:
       - id: check-json
       - id: check-yaml
