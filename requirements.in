@@ -2,7 +2,7 @@ pytest
 pyenchant
 requests
 coverage
-pre-commit
+pre-commit>=3.0
 Sphinx
 sphinx-rtd-theme
 recommonmark
