@@ -3,41 +3,33 @@ import subprocess
 
 
 def main():
-    # Run ruff check with JSON output
+
     result = subprocess.run(
-        ["ruff", "check", ".", "--output-format", "json"],
+        ["ruff", "check", ".", "--output-format", "concise"],
         capture_output=True,
         text=True,
     )
+    report = result.stdout + result.stderr
 
-    report = result.stdout
-    violations = json.loads(report) if report else []
-    violation_count = len(violations)
+    warning_count = sum(
+        1 for line in result.stdout.splitlines() if line.strip() and not line.startswith("Found") and ":" in line
+    )
 
-    # Write ruff report
-    problems_path = ".repo-reports/ruff-report.json"
+    problems_path = ".repo-reports/ruff-report.txt"
     with open(problems_path, "w+", encoding="utf-8", newline="\n") as f:
-        f.write(json.dumps(violations, indent=2))
+        f.write("output from ruff check:\n")
+        f.write(report)
 
-    # Calculate quality score (0-10, inverse of violations)
-    # 0 violations = 10, 1-5 = 8, 6-10 = 6, 11+ = 4
-    if violation_count == 0:
-        quality_score = 10
-    elif violation_count <= 5:
-        quality_score = 8
-    elif violation_count <= 10:
-        quality_score = 6
-    else:
-        quality_score = max(4 - (violation_count - 10) // 10, 1)
-
-    # Determine color
-    score_color = "red"
-    if quality_score >= 8:
+    if warning_count == 0:
         score_color = "#34D058"
-    elif quality_score >= 6:
+        message = "0 warnings"
+    elif warning_count <= 5:
         score_color = "yellow"
+        message = f"{warning_count} warnings"
+    else:
+        score_color = "red"
+        message = f"{warning_count} warnings"
 
-    # Create shield
     shield_path = ".repo-shields/quality_shield.json"
     with open(shield_path, "w+", encoding="utf-8", newline="\n") as f:
         f.write(
@@ -45,13 +37,13 @@ def main():
                 {
                     "schemaVersion": 1,
                     "label": "code quality",
-                    "message": f"{quality_score}/10 ({violation_count} issues)",
+                    "message": message,
                     "color": score_color,
                 },
             )
         )
 
-    return quality_score
+    return warning_count
 
 
 if __name__ == "__main__":
