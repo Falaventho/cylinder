@@ -13,3 +13,4 @@ pip-tools
 flask
 waitress
 twine
+pyyaml>=6.0.1
