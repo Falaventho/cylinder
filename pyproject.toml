@@ -38,3 +38,23 @@ package-dir = {"" = "src"}
 
 [tool.setuptools.dynamic]
 version = {attr = "cylinder.__version__"}
+
+[tool.ruff]
+
+[tool.coverage.run]
+source = ["."]
+omit = [
+    "tests/*",
+    "*/__pycache__/*",
+    "*.html",
+    "*.txt"
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:"
+]
