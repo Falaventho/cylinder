@@ -345,8 +345,8 @@ def run_func_with_dict(input_dict, func):
 
 
 class DirectFileServe:
-    def main(self, response):
-        # pylint: disable=no-self-argument
+    @staticmethod
+    def main(response):
         direct_path = global_proxy.search_paths[-1]
         mimetype, content_encoding = mimetypes.guess_type(direct_path, strict=False)
 
