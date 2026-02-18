@@ -269,7 +269,7 @@ def jinja_uptodate_closure(template):
 def jinja_loader_function(name):
     template = global_proxy.site_path / "templates" / name
     if os.path.exists(template):
-        with open(template, "r", encoding="UTF-8") as f:
+        with open(template, encoding="UTF-8") as f:
             template_content = f.read()
         uptodate_func = jinja_uptodate_closure(template)
         return (template_content, name, uptodate_func)
