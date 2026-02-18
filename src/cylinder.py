@@ -137,7 +137,7 @@ def populate_param_dict(app, init):
 def setup_catch_all(app):
     @app.endpoint("index")
     @app.endpoint("catchall")
-    def catch_all(path):  # pylint: disable=unused-argument
+    def catch_all(path):
         response_in = flask.Response()
 
         for module in global_proxy.module_chain:
@@ -179,7 +179,7 @@ def setup_after_request(app):
 
 def setup_teardown_request(app):
     @app.teardown_request
-    def teardown_request(excpt):  # pylint: disable=unused-argument
+    def teardown_request(excpt):
         local_manager.cleanup()
 
 
