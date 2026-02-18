@@ -8,3 +8,4 @@ __pycache__
 cylinder.egg-info
 /venv
 .venv/
+.vscode/
