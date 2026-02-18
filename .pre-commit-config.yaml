@@ -1,12 +1,5 @@
 fail_fast: false
-exclude: |
-  (?x)^(
-      docs/ |
-      another/example/directory/to_exclude/
-  )|(?x)^(
-      example/file/to_exclude.py |
-      another/example/file/to_exclude.py
-  )$
+exclude: (?x)^( docs/ | another/example/directory/to_exclude/ | example/file/to_exclude\.py | another/example/file/to_exclude\.py )
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.2.0
