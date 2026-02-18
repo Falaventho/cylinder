@@ -101,7 +101,7 @@ def setup_before_request(app, dir_map):
         global_proxy.request_id = (
             flask.request.headers.get("X-Request-ID")
             or flask.request.headers.get("CF-Ray")
-            or f"req_{format(int(flask.request.start_time*1000), 'X')}"
+            or f"req_{format(int(flask.request.start_time * 1000), 'X')}"
         )
 
         app.logger.debug(
@@ -250,9 +250,7 @@ def late_hook_hail_mary(app, response):
             while tb.tb_next:
                 tb = tb.tb_next
 
-            app.logger.error(
-                f'Got exception "{x}" at line {tb.tb_lineno} ' f"in {late_hook.__name__}, continuing anyway"
-            )
+            app.logger.error(f'Got exception "{x}" at line {tb.tb_lineno} in {late_hook.__name__}, continuing anyway')
     return response_out
 
 
