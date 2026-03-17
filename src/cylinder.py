@@ -206,7 +206,11 @@ class Cylinder:
 
 @deprecated("Use Cylinder instead")
 def get_app(
-    app_map, log_level=logging.DEBUG, log_handler=None, request_id_header="X-Request-ID", log_queue_length=1000
+    app_map,
+    log_level=logging.DEBUG,
+    log_handler=None,
+    request_id_header="X-Request-ID",
+    log_queue_length=1000,
 ):
     return Cylinder(
         app_map=app_map,
@@ -317,7 +321,10 @@ def find_processor_path(suffix_list):
         for suffix in suffix_list:
             potential_file = f"{path}.{suffix}.py"
             # pathlib .resolve() is here to handle the case-insensitivity of windows. Enforces case to match
-            if os.path.isfile(potential_file) and str(pathlib.Path(potential_file).resolve()) == potential_file:
+            if (
+                os.path.isfile(potential_file)
+                and str(pathlib.Path(potential_file).resolve()) == potential_file
+            ):
                 return potential_file
     return None
 

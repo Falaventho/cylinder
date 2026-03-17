@@ -1,4 +1,4 @@
-﻿# Cylinder
+# Cylinder
 
 Cylinder is a small, opinionated WSGI web framework built on
 [Werkzeug](https://werkzeug.palletsprojects.com/en/2.1.x/serving/). It is designed for developers who want
@@ -19,9 +19,9 @@ Plasma is the nonprofit software foundation that supports Cylinder’s ongoing d
 
 Most Python web frameworks make a tradeoff:
 
-- **microframeworks** stay out of your way, but leave project structure and conventions up to each team
-- **full-stack frameworks** provide structure, but often bring layers, conventions, and abstractions you
-  may not want
+-   **microframeworks** stay out of your way, but leave project structure and conventions up to each team
+-   **full-stack frameworks** provide structure, but often bring layers, conventions, and abstractions you
+    may not want
 
 Cylinder is designed to sit in the middle.
 
@@ -140,8 +140,8 @@ Cylinder uses the filename to determine both the type of handler and the HTTP me
 
 In `bar.ex.get.py`:
 
-- `.ex` means this is a standard executable page handler
-- `.get` means it handles `GET` requests
+-   `.ex` means this is a standard executable page handler
+-   `.get` means it handles `GET` requests
 
 So if you want `/foo/bar` to handle `POST` requests as well, you would add a second file named
 `bar.ex.post.py`.
@@ -168,10 +168,10 @@ For example:
 
 With that layout:
 
-- `GET /foo/bar` is handled by `bar.ex.get.py`
-- `POST /foo/bar` is handled by `bar.ex.post.py`
-- `PUT /foo/bar`, `DELETE /foo/bar`, `HEAD /foo/bar`, and any other unmatched method are handled by
-  `bar.ex.default.py`
+-   `GET /foo/bar` is handled by `bar.ex.get.py`
+-   `POST /foo/bar` is handled by `bar.ex.post.py`
+-   `PUT /foo/bar`, `DELETE /foo/bar`, `HEAD /foo/bar`, and any other unmatched method are handled by
+    `bar.ex.default.py`
 
 Meanwhile, `webapp1.ex.get.py` continues to handle `GET` requests everywhere else that does not have a more
 specific match.
@@ -213,11 +213,11 @@ Given this layout:
 
 The following requests would match like this:
 
-- `GET /foo/bar` → `bar.ex.get.py`
-- `POST /foo/bar` → `bar.ex.post.py`
-- `PUT /foo/bar` → `foo.ex.default.py`
-- `GET /foo/bar.txt` → the static file `bar.txt`
-- `GET /anything-else` → `webapp1.ex.get.py`
+-   `GET /foo/bar` → `bar.ex.get.py`
+-   `POST /foo/bar` → `bar.ex.post.py`
+-   `PUT /foo/bar` → `foo.ex.default.py`
+-   `GET /foo/bar.txt` → the static file `bar.txt`
+-   `GET /anything-else` → `webapp1.ex.get.py`
 
 Because there is no bar.ex.put.py, Cylinder falls back up the directory tree to the nearest matching
 fallback handler, which in this case is foo.ex.default.py.
@@ -257,10 +257,10 @@ Cylinder creates for you before calling your handler. Your job is to modify it a
 
 For example, you might set:
 
-- `response.data` for the response body
-- `response.status_code` for the HTTP status
-- `response.headers[...]` for custom headers
-- `response.content_type` for the content type
+-   `response.data` for the response body
+-   `response.status_code` for the HTTP status
+-   `response.headers[...]` for custom headers
+-   `response.content_type` for the content type
 
 If your handler also needs access to the incoming request, include a `request` parameter:
 
@@ -300,20 +300,20 @@ def main(request, response, log, abort, g):
 
 The built-in parameters are:
 
-- `response` — the
-  [Werkzeug Response](https://werkzeug.palletsprojects.com/en/stable/quickstart/#responses) object your
-  handler should modify and return
-- `request` — the
-  [Werkzeug Request](https://werkzeug.palletsprojects.com/en/stable/wrappers/#werkzeug.wrappers.Request)
-  object for the current request
-- `log` — Cylinder’s logger for the current request
-- `abort` — the
-  [Werkzeug `abort()` function](https://werkzeug.palletsprojects.com/en/stable/exceptions/#simple-aborting),
-  extended with support for redirect-style HTTP exceptions such as `301`, `302`, `303`, `307`, and `308`
-- `g` — a [SimpleNamespace](https://docs.python.org/3/library/types.html#types.SimpleNamespace) that works
-  like Flask’s [`g`](https://flask.palletsprojects.com/en/stable/api/#flask.g): a request-scoped scratchpad
-  for passing data between hooks, handlers, and error handlers
-- `e` — the exception object, available only in exception handlers
+-   `response` — the
+    [Werkzeug Response](https://werkzeug.palletsprojects.com/en/stable/quickstart/#responses) object your
+    handler should modify and return
+-   `request` — the
+    [Werkzeug Request](https://werkzeug.palletsprojects.com/en/stable/wrappers/#werkzeug.wrappers.Request)
+    object for the current request
+-   `log` — Cylinder’s logger for the current request
+-   `abort` — the
+    [Werkzeug `abort()` function](https://werkzeug.palletsprojects.com/en/stable/exceptions/#simple-aborting),
+    extended with support for redirect-style HTTP exceptions such as `301`, `302`, `303`, `307`, and `308`
+-   `g` — a [SimpleNamespace](https://docs.python.org/3/library/types.html#types.SimpleNamespace) that
+    works like Flask’s [`g`](https://flask.palletsprojects.com/en/stable/api/#flask.g): a request-scoped
+    scratchpad for passing data between hooks, handlers, and error handlers
+-   `e` — the exception object, available only in exception handlers
 
 You do not need to declare parameters you are not using. Cylinder only passes the ones your `main()`
 function asks for.
@@ -322,11 +322,11 @@ These are the built-in parameters provided by the framework.
 
 `app_map()` can receive the same built-in framework parameters as page handlers, in any order:
 
-- `request`
-- `response`
-- `log`
-- `abort`
-- `g`
+-   `request`
+-   `response`
+-   `log`
+-   `abort`
+-   `g`
 
 The most common form is `app_map(request)`, but you can include the others if you need them.
 
@@ -439,8 +439,8 @@ For example:
 
 In this layout:
 
-- `webapp1.400.py` handles `400` errors for the site in general
-- `foo.400.py` handles `400` errors under `/foo/*`
+-   `webapp1.400.py` handles `400` errors for the site in general
+-   `foo.400.py` handles `400` errors under `/foo/*`
 
 This makes it easy to return HTML error pages for most of a site while returning JSON errors for a specific
 subtree such as `/api/`.
@@ -513,21 +513,21 @@ Extra parameters are matched by name, so it is important to choose names careful
 
 The built-in parameter names used by Cylinder are:
 
-- `request`
-- `response`
-- `log`
-- `abort`
-- `g`
-- `e`
+-   `request`
+-   `response`
+-   `log`
+-   `abort`
+-   `g`
+-   `e`
 
 You should not reuse those names in `app_map()`.
 
 More generally, it is a good idea to avoid names that may be confusing or ambiguous inside your handlers,
 such as:
 
-- names that conflict with Python built-ins
-- names that conflict with modules you also import in the same file
-- names that are too generic to make their purpose obvious
+-   names that conflict with Python built-ins
+-   names that conflict with modules you also import in the same file
+-   names that are too generic to make their purpose obvious
 
 For example, names like `json`, `db`, `config`, `logger`, `SessionLocal`, or `render_template` are usually
 clear. Names like `list`, `type`, `id`, or `file` are more likely to cause confusion.
@@ -584,12 +584,12 @@ def main(request, response, json):
 
 This same mechanism works for many other kinds of application-level dependencies, such as:
 
-- configuration objects
-- database session factories
-- template render functions
-- locks
-- helper modules
-- aliases for built-in framework objects
+-   configuration objects
+-   database session factories
+-   template render functions
+-   locks
+-   helper modules
+-   aliases for built-in framework objects
 
 For example, if you prefer `logger` over `log`, you can provide that alias yourself:
 
@@ -710,8 +710,8 @@ For example:
 
 In this layout:
 
-- a request to `/example1.json` returns the contents of `example1.json`
-- a request to `/foo/example2.css` returns the contents of `example2.css`
+-   a request to `/example1.json` returns the contents of `example1.json`
+-   a request to `/foo/example2.css` returns the contents of `example2.css`
 
 Cylinder sets the `Content-Type` header based on the file extension using Python’s standard library
 [`mimetypes`](https://docs.python.org/3/library/mimetypes.html). In the example above, the responses would
@@ -959,11 +959,11 @@ Not every URL has a simple 1:1 relationship with the filesystem.
 
 For example, in a REST API you might expect:
 
-- `POST /API/v1/users` to create a user and return an ID
-- `GET /API/v1/users/<id>` to return a specific user
-- `GET /API/v1/users?lname=Smith` to search for users by last name
-- `PUT /API/v1/users/<id>` to update a specific user
-- `DELETE /API/v1/users/<id>` to delete a specific user
+-   `POST /API/v1/users` to create a user and return an ID
+-   `GET /API/v1/users/<id>` to return a specific user
+-   `GET /API/v1/users?lname=Smith` to search for users by last name
+-   `PUT /API/v1/users/<id>` to update a specific user
+-   `DELETE /API/v1/users/<id>` to delete a specific user
 
 Cylinder does not use named dynamic route declarations. Instead, it matches each request to the most
 specific handler on disk, and any remaining path information stays available on the request object for your
@@ -988,10 +988,10 @@ A layout for the example above might look like this:
 
 In this layout:
 
-- `POST /API/v1/users` is handled by `users.ex.post.py`
-- `GET /API/v1/users` is handled by `users.ex.get.py`
-- `PUT /API/v1/users/<id>` is handled by `users.ex.put.py`
-- `DELETE /API/v1/users/<id>` is handled by `users.ex.delete.py`
+-   `POST /API/v1/users` is handled by `users.ex.post.py`
+-   `GET /API/v1/users` is handled by `users.ex.get.py`
+-   `PUT /API/v1/users/<id>` is handled by `users.ex.put.py`
+-   `DELETE /API/v1/users/<id>` is handled by `users.ex.delete.py`
 
 The important point is that Cylinder routes the request to the most specific matching handler file. It does
 not matter that `/users/<id>` contains dynamic path data after `/users`; that remaining path can be
@@ -1061,8 +1061,8 @@ remains responsible for interpreting any dynamic data that comes after that matc
 
 Cylinder supports two kinds of hooks:
 
-- `early hooks`, which run before the main page handler
-- `late hooks`, which run after the main page handler
+-   `early hooks`, which run before the main page handler
+-   `late hooks`, which run after the main page handler
 
 Hooks are defined the same way as page handlers: by placing files in the filesystem with special
 extensions.
@@ -1089,8 +1089,8 @@ For example:
 
 In this layout:
 
-- `v2.lh.get.py` is a late hook for requests under `/API/v2/*`
-- `reports.eh.get.py` is an early hook for requests under `/API/v2/reports/*`
+-   `v2.lh.get.py` is a late hook for requests under `/API/v2/*`
+-   `reports.eh.get.py` is an early hook for requests under `/API/v2/reports/*`
 
 So a request to `/API/v2/reports/company/*` would flow like this after `app_map()`:
 
@@ -1345,9 +1345,9 @@ application is restarted.
 
 For example:
 
-- changes to page handlers, hooks, and error handlers are picked up dynamically
-- changes to `cylinder_main.py` require a restart
-- changes to modules or objects initialized once from `cylinder_main.py` also require a restart
+-   changes to page handlers, hooks, and error handlers are picked up dynamically
+-   changes to `cylinder_main.py` require a restart
+-   changes to modules or objects initialized once from `cylinder_main.py` also require a restart
 
 In practice, this means most request-handling code behaves dynamically, while application bootstrap code
 behaves like normal long-lived Python process state.
@@ -1386,12 +1386,12 @@ Note the non-standard `request_id` field in the format string. This is described
 
 Cylinder’s main logging-related options are:
 
-- `log_level` — controls the logging level passed to the application logger. It defaults to
-  `logging.DEBUG`.
-- `log_handler` — controls where log records are written. By default, Cylinder creates a
-  `logging.StreamHandler(sys.stderr)`. You can pass your own handler instead, such as a file handler, an
-  SMTP handler, or `logging.NullHandler` if you want to silence logs.
-- `log_queue_length` — controls the length of the internal logging queue.
+-   `log_level` — controls the logging level passed to the application logger. It defaults to
+    `logging.DEBUG`.
+-   `log_handler` — controls where log records are written. By default, Cylinder creates a
+    `logging.StreamHandler(sys.stderr)`. You can pass your own handler instead, such as a file handler, an
+    SMTP handler, or `logging.NullHandler` if you want to silence logs.
+-   `log_queue_length` — controls the length of the internal logging queue.
 
 Cylinder uses a queue for logging so that request handling does not have to wait on the log handler before
 returning a response. This is especially useful when the handler is slow, such as

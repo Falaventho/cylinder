@@ -173,7 +173,7 @@ request:</p>
 <span class="kn">import</span><span class="w"> </span><span class="nn">waitress</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
-    <span class="n">app</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">get_app</span><span class="p">(</span><span class="n">app_map</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">Cylinder</span><span class="p">(</span><span class="n">app_map</span><span class="p">)</span>
     <span class="n">waitress</span><span class="o">.</span><span class="n">serve</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">app_map</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
@@ -571,7 +571,7 @@ through <code class="docutils literal notranslate"><span class="pre">app_map()</
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
-    <span class="n">app</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">get_app</span><span class="p">(</span><span class="n">app_map</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">Cylinder</span><span class="p">(</span><span class="n">app_map</span><span class="p">)</span>
     <span class="n">waitress</span><span class="o">.</span><span class="n">serve</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">app_map</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
@@ -618,7 +618,7 @@ through <code class="docutils literal notranslate"><span class="pre">app_map()</
 <span class="kn">import</span><span class="w"> </span><span class="nn">waitress</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
-    <span class="n">app</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">get_app</span><span class="p">(</span><span class="n">app_map</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">Cylinder</span><span class="p">(</span><span class="n">app_map</span><span class="p">)</span>
     <span class="n">waitress</span><span class="o">.</span><span class="n">serve</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">app_map</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">log</span><span class="p">):</span>
@@ -654,7 +654,7 @@ same way as any other application dependency: define it in <code class="docutils
     <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
-    <span class="n">app</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">get_app</span><span class="p">(</span><span class="n">app_map</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">Cylinder</span><span class="p">(</span><span class="n">app_map</span><span class="p">)</span>
     <span class="n">waitress</span><span class="o">.</span><span class="n">serve</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">app_map</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
@@ -781,7 +781,7 @@ inside <code class="docutils literal notranslate"><span class="pre">cylinder_mai
 <span class="kn">import</span><span class="w"> </span><span class="nn">db</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
-    <span class="n">app</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">get_app</span><span class="p">(</span><span class="n">app_map</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">Cylinder</span><span class="p">(</span><span class="n">app_map</span><span class="p">)</span>
     <span class="n">waitress</span><span class="o">.</span><span class="n">serve</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">app_map</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
@@ -825,7 +825,7 @@ are responsible for protecting it with the appropriate synchronization primitive
 <span class="n">lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
-    <span class="n">app</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">get_app</span><span class="p">(</span><span class="n">app_map</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">Cylinder</span><span class="p">(</span><span class="n">app_map</span><span class="p">)</span>
     <span class="n">waitress</span><span class="o">.</span><span class="n">serve</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">app_map</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
@@ -864,7 +864,7 @@ to reason about but requires shared storage if the application runs on multiple 
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserDict</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
-    <span class="n">app</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">get_app</span><span class="p">(</span><span class="n">app_map</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">Cylinder</span><span class="p">(</span><span class="n">app_map</span><span class="p">)</span>
     <span class="n">waitress</span><span class="o">.</span><span class="n">serve</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">app_map</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
@@ -1073,15 +1073,15 @@ late hook.</p>
 </section>
 <section id="how-configuration-and-environments-are-handled">
 <h2>How configuration and environments are handled<a class="headerlink" href="#how-configuration-and-environments-are-handled" title="Link to this heading"></a></h2>
-<p>Cylinder keeps framework-level configuration intentionally small. The built-in options on <code class="docutils literal notranslate"><span class="pre">get_app()</span></code> are:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_app</span><span class="p">(</span>
+<p>Cylinder keeps framework-level configuration intentionally small. The built-in options on <code class="docutils literal notranslate"><span class="pre">Cylinder()</span></code> are:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Cylinder</span><span class="p">(</span>
     <span class="n">app_map</span><span class="p">,</span>
     <span class="n">log_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span>
     <span class="n">log_handler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">request_id_header</span><span class="o">=</span><span class="s2">&quot;X-Request-ID&quot;</span><span class="p">,</span>
     <span class="n">log_queue_length</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
     <span class="n">abort_extra</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<span class="p">):</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 <p>Beyond that, Cylinder treats configuration as ordinary Python code.</p>
@@ -1093,7 +1093,7 @@ configuration flexible and close to the code it affects.</p>
 <span class="kn">import</span><span class="w"> </span><span class="nn">waitress</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
-    <span class="n">app</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">get_app</span><span class="p">(</span><span class="n">app_map</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">Cylinder</span><span class="p">(</span><span class="n">app_map</span><span class="p">)</span>
     <span class="n">waitress</span><span class="o">.</span><span class="n">serve</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">app_map</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
@@ -1117,7 +1117,7 @@ into your handlers:</p>
 <span class="n">config</span> <span class="o">=</span> <span class="n">dotenv_values</span><span class="p">(</span><span class="s2">&quot;.env&quot;</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
-    <span class="n">app</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">get_app</span><span class="p">(</span><span class="n">app_map</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">Cylinder</span><span class="p">(</span><span class="n">app_map</span><span class="p">)</span>
     <span class="n">waitress</span><span class="o">.</span><span class="n">serve</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">app_map</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
@@ -1173,7 +1173,7 @@ Cylinder exposes a
     <span class="k">def</span><span class="w"> </span><span class="nf">app_map</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;my_webapps&quot;</span><span class="p">,</span> <span class="s2">&quot;webapp1&quot;</span><span class="p">,</span> <span class="p">{}</span>
 
-    <span class="n">app</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">get_app</span><span class="p">(</span><span class="n">app_map</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">Cylinder</span><span class="p">(</span><span class="n">app_map</span><span class="p">)</span>
     <span class="n">app</span><span class="o">.</span><span class="n">wait_for_logs</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># wait for the log queue to drain before returning</span>
 
     <span class="c1"># other setup can go here</span>
@@ -1207,7 +1207,7 @@ production.</p>
 </section>
 <section id="abort-extra">
 <h2><code class="docutils literal notranslate"><span class="pre">abort_extra</span></code><a class="headerlink" href="#abort-extra" title="Link to this heading"></a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">abort_extra</span></code> is an optional argument to <code class="docutils literal notranslate"><span class="pre">get_app()</span></code> that lets you register additional HTTP exception
+<p><code class="docutils literal notranslate"><span class="pre">abort_extra</span></code> is an optional argument to <code class="docutils literal notranslate"><span class="pre">Cylinder()</span></code> that lets you register additional HTTP exception
 classes beyond the ones
 <a class="reference external" href="https://werkzeug.palletsprojects.com/en/stable/exceptions/#custom-errors">Werkzeug provides by default</a>.</p>
 <p>This extends both <code class="docutils literal notranslate"><span class="pre">abort()</span></code> and the corresponding error-handler file mechanism.</p>
@@ -1223,7 +1223,7 @@ pass it in through <code class="docutils literal notranslate"><span class="pre">
     <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;The server has insufficient storage to complete the request&quot;</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
-    <span class="n">app</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">get_app</span><span class="p">(</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">Cylinder</span><span class="p">(</span>
         <span class="n">app_map</span><span class="p">,</span>
         <span class="n">abort_extra</span><span class="o">=</span><span class="p">{</span><span class="mi">507</span><span class="p">:</span> <span class="n">InsufficientStorage</span><span class="p">},</span>
     <span class="p">)</span>
@@ -1266,7 +1266,7 @@ behaves like normal long-lived Python process state.</p>
 </section>
 <section id="logging-configuration">
 <h2>Logging configuration<a class="headerlink" href="#logging-configuration" title="Link to this heading"></a></h2>
-<p>Cylinder’s built-in logging can be customized through <code class="docutils literal notranslate"><span class="pre">get_app()</span></code> and through the log formatter.</p>
+<p>Cylinder’s built-in logging can be customized through <code class="docutils literal notranslate"><span class="pre">Cylinder()</span></code> and through the log formatter.</p>
 <p>For example, the default formatter looks like this:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">cylinder</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">waitress</span>
@@ -1278,7 +1278,7 @@ behaves like normal long-lived Python process state.</p>
 <span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
-    <span class="n">app</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">get_app</span><span class="p">(</span><span class="n">app_map</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">cylinder</span><span class="o">.</span><span class="n">Cylinder</span><span class="p">(</span><span class="n">app_map</span><span class="p">)</span>
     <span class="n">waitress</span><span class="o">.</span><span class="n">serve</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">app_map</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
@@ -1309,8 +1309,8 @@ bound and consume large amounts of memory under load.</p>
 </section>
 <section id="request-id-header">
 <h2>request_id_header<a class="headerlink" href="#request-id-header" title="Link to this heading"></a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">request_id_header</span></code> is an optional argument to <code class="docutils literal notranslate"><span class="pre">get_app()</span></code> that specifies which incoming HTTP header should
-be used as the request ID.</p>
+<p><code class="docutils literal notranslate"><span class="pre">request_id_header</span></code> is an optional argument to <code class="docutils literal notranslate"><span class="pre">Cylinder()</span></code> that specifies which incoming HTTP header
+should be used as the request ID.</p>
 <p>It defaults to <code class="docutils literal notranslate"><span class="pre">X-Request-ID</span></code>. If your proxy or CDN uses a different header, you can override it. For
 example, Cloudflare commonly uses <code class="docutils literal notranslate"><span class="pre">Cf-Ray</span></code>.</p>
 <p>If the configured header is missing, Cylinder generates a request ID automatically.</p>

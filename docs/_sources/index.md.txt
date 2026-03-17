@@ -69,7 +69,7 @@ import cylinder
 import waitress
 
 def main():
-    app = cylinder.get_app(app_map)
+    app = cylinder.Cylinder(app_map)
     waitress.serve(app, host="127.0.0.1", port=80)
 
 def app_map(request):
@@ -544,7 +544,7 @@ import waitress
 import json
 
 def main():
-    app = cylinder.get_app(app_map)
+    app = cylinder.Cylinder(app_map)
     waitress.serve(app, host="127.0.0.1", port=80)
 
 def app_map(request):
@@ -598,7 +598,7 @@ import cylinder
 import waitress
 
 def main():
-    app = cylinder.get_app(app_map)
+    app = cylinder.Cylinder(app_map)
     waitress.serve(app, host="127.0.0.1", port=80)
 
 def app_map(request, log):
@@ -637,7 +637,7 @@ def render_template(template_name, **context):
     return template.render(context)
 
 def main():
-    app = cylinder.get_app(app_map)
+    app = cylinder.Cylinder(app_map)
     waitress.serve(app, host="127.0.0.1", port=80)
 
 def app_map(request):
@@ -792,7 +792,7 @@ import waitress
 import db
 
 def main():
-    app = cylinder.get_app(app_map)
+    app = cylinder.Cylinder(app_map)
     waitress.serve(app, host="127.0.0.1", port=80)
 
 def app_map(request):
@@ -845,7 +845,7 @@ import threading
 lock = threading.Lock()
 
 def main():
-    app = cylinder.get_app(app_map)
+    app = cylinder.Cylinder(app_map)
     waitress.serve(app, host="127.0.0.1", port=80)
 
 def app_map(request):
@@ -891,7 +891,7 @@ import sqlite3
 from collections import UserDict
 
 def main():
-    app = cylinder.get_app(app_map)
+    app = cylinder.Cylinder(app_map)
     waitress.serve(app, host="127.0.0.1", port=80)
 
 def app_map(request, response):
@@ -1126,17 +1126,17 @@ late hook.
 
 ## How configuration and environments are handled
 
-Cylinder keeps framework-level configuration intentionally small. The built-in options on `get_app()` are:
+Cylinder keeps framework-level configuration intentionally small. The built-in options on `Cylinder()` are:
 
 ```python
-def get_app(
+Cylinder(
     app_map,
     log_level=logging.DEBUG,
     log_handler=None,
     request_id_header="X-Request-ID",
     log_queue_length=1000,
     abort_extra=None,
-):
+)
 ```
 
 Beyond that, Cylinder treats configuration as ordinary Python code.
@@ -1152,7 +1152,7 @@ import cylinder
 import waitress
 
 def main():
-    app = cylinder.get_app(app_map)
+    app = cylinder.Cylinder(app_map)
     waitress.serve(app, host="127.0.0.1", port=80)
 
 def app_map(request):
@@ -1179,7 +1179,7 @@ from dotenv import dotenv_values
 config = dotenv_values(".env")
 
 def main():
-    app = cylinder.get_app(app_map)
+    app = cylinder.Cylinder(app_map)
     waitress.serve(app, host="127.0.0.1", port=80)
 
 def app_map(request):
@@ -1245,7 +1245,7 @@ def webapp1_app():
     def app_map(request):
         return "my_webapps", "webapp1", {}
 
-    app = cylinder.get_app(app_map)
+    app = cylinder.Cylinder(app_map)
     app.wait_for_logs = True  # wait for the log queue to drain before returning
 
     # other setup can go here
@@ -1284,7 +1284,7 @@ production.
 
 ## `abort_extra`
 
-`abort_extra` is an optional argument to `get_app()` that lets you register additional HTTP exception
+`abort_extra` is an optional argument to `Cylinder()` that lets you register additional HTTP exception
 classes beyond the ones
 [Werkzeug provides by default](https://werkzeug.palletsprojects.com/en/stable/exceptions/#custom-errors).
 
@@ -1304,7 +1304,7 @@ class InsufficientStorage(werkzeug.exceptions.HTTPException):
     description = "The server has insufficient storage to complete the request"
 
 def main():
-    app = cylinder.get_app(
+    app = cylinder.Cylinder(
         app_map,
         abort_extra={507: InsufficientStorage},
     )
@@ -1354,7 +1354,7 @@ behaves like normal long-lived Python process state.
 
 ## Logging configuration
 
-Cylinder’s built-in logging can be customized through `get_app()` and through the log formatter.
+Cylinder’s built-in logging can be customized through `Cylinder()` and through the log formatter.
 
 For example, the default formatter looks like this:
 
@@ -1369,7 +1369,7 @@ cylinder.log_formatter = logging.Formatter(
 )
 
 def main():
-    app = cylinder.get_app(app_map)
+    app = cylinder.Cylinder(app_map)
     waitress.serve(app, host="127.0.0.1", port=80)
 
 def app_map(request):
@@ -1404,8 +1404,8 @@ bound and consume large amounts of memory under load.
 
 ## request_id_header
 
-`request_id_header` is an optional argument to `get_app()` that specifies which incoming HTTP header should
-be used as the request ID.
+`request_id_header` is an optional argument to `Cylinder()` that specifies which incoming HTTP header
+should be used as the request ID.
 
 It defaults to `X-Request-ID`. If your proxy or CDN uses a different header, you can override it. For
 example, Cloudflare commonly uses `Cf-Ray`.
