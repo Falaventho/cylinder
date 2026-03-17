@@ -10,6 +10,7 @@ import time
 from datetime import datetime
 from types import SimpleNamespace
 import traceback
+from warnings import deprecated
 
 import werkzeug
 import werkzeug.local
@@ -27,32 +28,42 @@ log_formatter = logging.Formatter(
 
 
 # ruff: disable[C901, PLR0915]
-def get_app(
-    app_map,
-    log_level=logging.DEBUG,
-    log_handler=None,
-    request_id_header="X-Request-ID",
-    log_queue_length=1000,
-    abort_extra=None,
-):
-    if not callable(app_map):
-        raise ValueError("app_map must be a function")
+class Cylinder:
+    def __init__(
+        self,
+        app_map,
+        log_level=logging.DEBUG,
+        log_handler=None,
+        request_id_header="X-Request-ID",
+        log_queue_length=1000,
+        abort_extra=None,
+    ):
+        if not callable(app_map):
+            raise ValueError("app_map must be a function")
 
-    if not log_handler:
-        log_handler = logging.StreamHandler(sys.stderr)
+        if not log_handler:
+            log_handler = logging.StreamHandler(sys.stderr)
 
-    logger, log_queue, log_listener = configure_logging(
-        log_level=log_level,
-        log_queue_length=log_queue_length,
-        log_handler=log_handler,
-    )
+        self.logger, self.log_queue, self.log_listener = configure_logging(
+            log_level=log_level,
+            log_queue_length=log_queue_length,
+            log_handler=log_handler,
+        )
 
-    def app(environ, start_response):
+        self._app_map = app_map
+        self._request_id_header = request_id_header
+        self._abort_extra = abort_extra
+        self.wait_for_logs = False
+        self.global_proxy = global_proxy
+
+        self.logger.debug("Plasma cylinder energized. Awaiting requests.")
+
+    def __call__(self, environ, start_response):
         request = werkzeug.wrappers.Request(environ, shallow=True)
         werkzeug_local.global_proxy = SimpleNamespace()
         global_proxy.g = SimpleNamespace()
 
-        app.abort = werkzeug.exceptions.Aborter(
+        self.abort = werkzeug.exceptions.Aborter(
             extra={
                 301: RedirectMovedPermanently,
                 302: RedirectFound,
@@ -60,20 +71,20 @@ def get_app(
                 307: RedirectTemporaryRedirect,
                 308: RedirectPermanentRedirect,
             }
-            | (abort_extra or {})
+            | (self._abort_extra or {})
         )
 
         global_proxy.param_dict = {
             "request": request,
             "g": global_proxy.g,
-            "abort": app.abort,
-            "log": logger,
+            "abort": self.abort,
+            "log": self.logger,
         }
 
         response = werkzeug.wrappers.Response()
 
         site_dir, site_name, appended_args = run_func_with_dict(
-            {"response": response} | global_proxy.param_dict, app_map
+            {"response": response} | global_proxy.param_dict, self._app_map
         )
 
         site_path = pathlib.Path.cwd() / site_dir
@@ -84,11 +95,11 @@ def get_app(
         request.start_time = time.time()
 
         global_proxy.request_id = (
-            request.headers.get(request_id_header)
+            request.headers.get(self._request_id_header)
             or f"req_{format(int(request.start_time * 1000000), 'X')[::-1]}"
         )
 
-        logger.debug(
+        self.logger.debug(
             "INCOMING_REQUEST: %s %s %s %s",
             request.remote_addr,
             request.method,
@@ -103,17 +114,17 @@ def get_app(
             global_proxy.module_chain = get_processors(request.method)
             early_hook, _, late_hook = global_proxy.module_chain
             if not global_proxy.module_chain[1]:
-                app.abort(501)
+                self.abort(501)
 
             for module in global_proxy.module_chain:
                 shallow_request = module is early_hook
                 response = process_module(
-                    module, response, global_proxy.param_dict | appended_args, logger, shallow_request
+                    module, response, global_proxy.param_dict | appended_args, self.logger, shallow_request
                 )
             return response(environ, start_response)
 
         except RedirectCustomClass as e:
-            logger.debug("abort redirect %s raised.", e.code)
+            self.logger.debug("abort redirect %s raised.", e.code)
             response = werkzeug.wrappers.Response("", e.code, {"Location": e.description})
 
             if module and module is late_hook:
@@ -124,7 +135,7 @@ def get_app(
                     late_hook,
                     response,
                     global_proxy.param_dict | appended_args | {"e": e},
-                    logger,
+                    self.logger,
                 )
                 response(environ, start_response)
 
@@ -136,12 +147,12 @@ def get_app(
         ) as ex:
             response = ex.get_response()
             ex_code = response.status_code
-            logger.debug("abort code %s raised.", ex_code)
+            self.logger.debug("abort code %s raised.", ex_code)
             custom_handler = get_http_error_handler(ex_code)
             if not custom_handler:
-                logger.debug("no custom handler registered for error %s", ex_code)
+                self.logger.debug("no custom handler registered for error %s", ex_code)
                 if ex_code == 500:  # noqa: PLR2004
-                    logger.error("".join(traceback.format_exception(ex)))
+                    self.logger.error("".join(traceback.format_exception(ex)))
             else:
                 try:
                     # an exception in the exception handler becomes a 500 error
@@ -149,17 +160,17 @@ def get_app(
                         custom_handler,
                         response,
                         global_proxy.param_dict | appended_args | {"e": ex},
-                        logger,
+                        self.logger,
                     )
                 except werkzeug.exceptions.InternalServerError as e:
                     custom_handler = get_http_error_handler(500)
                     if not custom_handler:
-                        logger.error("".join(traceback.format_exception(e)))
+                        self.logger.error("".join(traceback.format_exception(e)))
                     response = process_module(
                         custom_handler,
                         e.get_response(),
                         global_proxy.param_dict | appended_args | {"e": e},
-                        logger,
+                        self.logger,
                     )
 
             if module and module is late_hook:
@@ -170,13 +181,13 @@ def get_app(
                     late_hook,
                     response,
                     global_proxy.param_dict | appended_args | {"e": ex},
-                    logger,
+                    self.logger,
                 )
 
             return response(environ, start_response)
 
         finally:
-            logger.info(
+            self.logger.info(
                 "%s %s %s %s | %s | request completed in %s ms",
                 request.remote_addr,
                 request.method,
@@ -186,22 +197,24 @@ def get_app(
                 round((time.time() - request.start_time) * 1000),
             )
 
-            if app.wait_for_logs:
-                app.log_queue.join()
+            if self.wait_for_logs:
+                self.log_queue.join()
 
-    def test_client():
-        return werkzeug.test.Client(app)
+    def test_client(self):
+        return werkzeug.test.Client(self)
 
-    app.logger = logger
-    app.log_queue = log_queue
-    app.log_listener = log_listener
-    app.wait_for_logs = False
-    app.test_client = test_client
-    app.global_proxy = global_proxy
 
-    logger.debug("Plasma cylinder energized. Awaiting requests.")
-
-    return app
+@deprecated("Use Cylinder instead")
+def get_app(
+    app_map, log_level=logging.DEBUG, log_handler=None, request_id_header="X-Request-ID", log_queue_length=1000
+):
+    return Cylinder(
+        app_map=app_map,
+        log_level=log_level,
+        log_handler=log_handler,
+        request_id_header=request_id_header,
+        log_queue_length=log_queue_length,
+    )
 
 
 def configure_logging(log_level, log_queue_length, log_handler):
@@ -304,10 +317,7 @@ def find_processor_path(suffix_list):
         for suffix in suffix_list:
             potential_file = f"{path}.{suffix}.py"
             # pathlib .resolve() is here to handle the case-insensitivity of windows. Enforces case to match
-            if (
-                os.path.isfile(potential_file)
-                and str(pathlib.Path(potential_file).resolve()) == potential_file
-            ):
+            if os.path.isfile(potential_file) and str(pathlib.Path(potential_file).resolve()) == potential_file:
                 return potential_file
     return None
 

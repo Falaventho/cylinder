@@ -27,7 +27,7 @@ def foo_site_app():
             {"init": inittest, "render_template": render_template},
         )
 
-    app = cylinder.get_app(app_map_func, logging.DEBUG)
+    app = cylinder.Cylinder(app_map_func, logging.DEBUG)
     app.wait_for_logs = True
     # other setup can go here
 
@@ -45,7 +45,7 @@ def no_hook_fail_site_app():
             {"init": inittest, "render_template": render_template},
         )
 
-    app = cylinder.get_app(app_map_func, logging.DEBUG)
+    app = cylinder.Cylinder(app_map_func, logging.DEBUG)
     app.wait_for_logs = True
     return app
 
@@ -65,7 +65,7 @@ def minimum_site_client():
             {"init": inittest, "render_template": render_template},
         )
 
-    minimum_site_app = cylinder.get_app(app_map_func, logging.DEBUG)
+    minimum_site_app = cylinder.Cylinder(app_map_func, logging.DEBUG)
     minimum_site_app.wait_for_logs = True
 
     return minimum_site_app.test_client()

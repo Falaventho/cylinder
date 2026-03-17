@@ -96,19 +96,19 @@ def test_req_id(caplog):
     def app_map_func(request, g):
         return "test_sites", "foo_site", {"init": inittest}
 
-    foo_site_app = cylinder.get_app(app_map_func, log_handler=caplog.handler)
+    foo_site_app = cylinder.Cylinder(app_map_func, log_handler=caplog.handler)
     foo_site_client = foo_site_app.test_client()
     response = foo_site_client.get("/", headers={"X-Request-ID": "custom_req"})
     assert foo_site_app.global_proxy.request_id == "custom_req"
 
-    foo_site_app = cylinder.get_app(
+    foo_site_app = cylinder.Cylinder(
         app_map_func, log_handler=caplog.handler, request_id_header=None
     )
     foo_site_client = foo_site_app.test_client()
     response = foo_site_client.get("/")
     assert foo_site_app.global_proxy.request_id.startswith("req_")
 
-    foo_site_app = cylinder.get_app(
+    foo_site_app = cylinder.Cylinder(
         app_map_func, log_handler=caplog.handler, request_id_header="CF-Ray"
     )
     foo_site_client = foo_site_app.test_client()
@@ -279,7 +279,7 @@ def test_minimum_site_exception(caplog):
     def app_map_func(request, g):
         return "test_sites", "minimum_site", {"init": inittest}
 
-    minimum_site_app = cylinder.get_app(app_map_func, log_handler=caplog.handler)
+    minimum_site_app = cylinder.Cylinder(app_map_func, log_handler=caplog.handler)
     minimum_site_client = minimum_site_app.test_client()
 
     response = minimum_site_client.get("/except")
@@ -293,7 +293,7 @@ def test_minimum_site_exception_in_exception_handler(caplog):
     def app_map_func(request, g):
         return "test_sites", "minimum_site", {"init": inittest}
 
-    minimum_site_app = cylinder.get_app(app_map_func, log_handler=caplog.handler)
+    minimum_site_app = cylinder.Cylinder(app_map_func, log_handler=caplog.handler)
     minimum_site_client = minimum_site_app.test_client()
 
     response = minimum_site_client.get("/except2")
@@ -314,7 +314,7 @@ def test_request_wait(capsys):
     def app_map_func(request, g):
         return "test_sites", "minimum_site", {}
 
-    minimum_site_app = cylinder.get_app(app_map_func, logging.DEBUG)
+    minimum_site_app = cylinder.Cylinder(app_map_func, logging.DEBUG)
 
     minimum_site_app.wait_for_logs = True
     test_client = minimum_site_app.test_client()
@@ -338,7 +338,7 @@ def test_request_nowait(capsys):
     def app_map_func(request, g):
         return "test_sites", "minimum_site", {}
 
-    minimum_site_app = cylinder.get_app(app_map_func, logging.DEBUG)
+    minimum_site_app = cylinder.Cylinder(app_map_func, logging.DEBUG)
 
     minimum_site_app.wait_for_logs = False
     test_client = minimum_site_app.test_client()
@@ -359,7 +359,7 @@ def test_request_nowait(capsys):
 
 def test_invalid_app_map(capsys):
     try:
-        tiny_queue_app = cylinder.get_app("app_map", logging.DEBUG, log_queue_length=1)
+        tiny_queue_app = cylinder.Cylinder("app_map", logging.DEBUG, log_queue_length=1)
         assert False, "there should be a ValueError exception"
     except ValueError as e:
         assert "app_map must be a function" in str(e)
@@ -370,7 +370,7 @@ def test_logger_full(capsys):
     def app_map_func(request, g):
         return "test_sites", "minimum_site", {}
 
-    tiny_queue_app = cylinder.get_app(app_map_func, logging.DEBUG, log_queue_length=1)
+    tiny_queue_app = cylinder.Cylinder(app_map_func, logging.DEBUG, log_queue_length=1)
 
     # the buffer only holds 1, this test fills is up
     log = tiny_queue_app.logger
@@ -392,7 +392,7 @@ def test_faulty_late_hook(caplog):
     def app_map_func(request, g):
         return "test_sites", "foo_site", {"init": inittest}
 
-    foo_site_app = cylinder.get_app(app_map_func, log_handler=caplog.handler)
+    foo_site_app = cylinder.Cylinder(app_map_func, log_handler=caplog.handler)
     foo_site_client = foo_site_app.test_client()
 
     response = foo_site_client.get("/faulty_late_hook")
@@ -428,7 +428,7 @@ def test_late_abort():
     def app_map_func(request, g):
         return "test_sites", "foo_site", {"init": inittest}
 
-    foo_site_app = cylinder.get_app(app_map_func)
+    foo_site_app = cylinder.Cylinder(app_map_func)
     foo_site_client = foo_site_app.test_client()
 
     response = foo_site_client.get("/late_abort")

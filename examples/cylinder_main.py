@@ -8,7 +8,7 @@ import secrets
 
 
 def main():
-    app = cylinder.get_app(triage)
+    app = cylinder.Cylinder(triage)
     waitress.serve(app, host="127.0.0.1", port=80)
 
 

@@ -24,7 +24,7 @@ def render_template(template_name, **context):
 
 
 def main():
-    app = cylinder.get_app(app_map, log_level=logging.DEBUG)
+    app = cylinder.Cylinder(app_map, log_level=logging.DEBUG)
     waitress.serve(app, host="127.0.0.42", port=80)
 
 
